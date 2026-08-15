@@ -1,10 +1,20 @@
-# WASP-19 b — Real TESS Transit Report
+# WASP-19 b: One Day in the Life of a Hot Jupiter
 
+<!-- TARGET-IDENTITY-START -->
+<p align="center">
+  <img src="assets/artist_concept.webp" alt="Artist's interpretation of WASP-19 b near its host star" width="900">
+</p>
+
+<p align="center"><em>AI-generated artist's interpretation informed by the measured system properties; not a direct image.</em></p>
+
+**Ultra-short-period giant · stellar activity · TESS**
+
+A hot Jupiter completing an orbit in under a day, analyzed with timing freedom and explicit noise inflation in a regime where irradiation and stellar variability matter.
+<!-- TARGET-IDENTITY-END -->
 <p align="center">
   <img src="figures/wasp19b_tess_transit.png" alt="Phase-folded real TESS transit light curve of WASP-19 b" width="760">
 </p>
 
-One real public TESS SPOC light curve; one historical NASA Exoplanet Archive ephemeris; one timing-adjusted, limb-darkened transit fit.
 
 **[Open the full report](https://biswajit1999.github.io/wasp-19b-exoplanet-report/)** — the live GitHub Pages version.
 
