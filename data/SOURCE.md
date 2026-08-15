@@ -27,3 +27,18 @@ not make it free of residual stellar or instrumental systematics.
 
 The saved row is the input actually used by `scripts/analyze_transit.py`; the
 analysis does not query a changing live service at run time.
+
+
+## Additional TESS sectors for robustness analysis
+
+All are unmodified standard-cadence SPOC light curves from the same [MAST TESS collection](https://doi.org/10.17909/t9-nmc8-f686).
+
+- Sector 9: `tess2019058134432-s0009-0000000035516889-0139-s_lc.fits` (1,848,960 bytes)
+  - MAST URI: `mast:TESS/product/tess2019058134432-s0009-0000000035516889-0139-s_lc.fits`
+  - SHA-256: `70a40881930e7b374632a7afabb34ba2b18ff81841f6a622f03cf1d0268a06c0`
+- Sector 62: `tess2023043185947-s0062-0000000035516889-0254-s_lc.fits` (1,880,640 bytes)
+  - MAST URI: `mast:TESS/product/tess2023043185947-s0062-0000000035516889-0254-s_lc.fits`
+  - SHA-256: `c96bb25dadab40209390793713ad8ca6a579a0b224b06b9889f689cce555599a`
+- Sector 63: `tess2023069172124-s0063-0000000035516889-0255-s_lc.fits` (1,941,120 bytes)
+  - MAST URI: `mast:TESS/product/tess2023069172124-s0063-0000000035516889-0255-s_lc.fits`
+  - SHA-256: `8d61f6d1c3bc90f061ae4ce37ce9509ed52f4836022576ef6581510061a5601f`
