@@ -1,0 +1,19 @@
+quantity,value,unit
+events_fitted,89,count
+events_supported,89,count; individual Delta BIC >= 10
+sectors,3,count
+timing_baseline_days,1496.42817329,days
+linear_chi_square,31.5827312581,
+linear_dof,87,
+linear_bic,40.5600039976,
+quadratic_chi_square,30.6234301207,
+quadratic_dof,86,
+quadratic_bic,44.0893392299,
+delta_bic_linear_minus_quadratic,-3.52933523235,
+period_dot_ms_per_year,-199.006205081,ms per year; conditional TESS-only estimate
+period_dot_error_ms_per_year,203.183832347,ms per year; formal after beta and sector jitter
+negative_period_dot_95_limit_ms_per_year,-597.246516482,ms per year; Gaussian conditional bound
+modified_stellar_tidal_quality_factor_95_lower,4659.67162281,Q-prime; equilibrium-tide convention
+sector_9_timing_jitter_seconds,46.9825197963,seconds
+sector_62_timing_jitter_seconds,45.7856803881,seconds
+sector_63_timing_jitter_seconds,33.8618089658,seconds
