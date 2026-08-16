@@ -37,6 +37,7 @@ A hot Jupiter completing an orbit in under a day, analyzed with timing freedom a
 pip install -r requirements.txt
 python scripts/analyze_transit.py
 python scripts/analyze_multisector.py
+python scripts/analyze_timing_limits.py
 pytest tests/ -v
 ```
 
@@ -73,6 +74,25 @@ The archive prediction was timing-adjusted independently in 3 fitted sector(s) (
 The per-sector table is in [`figures/multisector_statistics.csv`](figures/multisector_statistics.csv). Regenerate all three figures with `python scripts/analyze_multisector.py`.
 <!-- MULTISECTOR-UPGRADE-END -->
 
+## What can TESS alone say about orbital evolution?
+
+<p align="center"><img src="figures/wasp19b_timing_limits.png" alt="TESS timing limits for WASP-19 b" width="820"></p>
+
+This repository independently measures **89 transits** from TESS Sectors 9, 62, and 63 over 1,496 days. Each event uses a fixed sector-level transit shape while fitting its midpoint and local baseline. Its timing uncertainty is inflated by both a residual time-averaging factor and an empirical sector jitter of 34–47 seconds.
+
+The result is a useful negative sensitivity test:
+
+- a linear ephemeris is preferred over a quadratic one, with **Delta BIC(linear - quadratic) = -3.5**;
+- the conditional TESS-only estimate is **Pdot = -199 +/- 203 ms yr-1**;
+- the corresponding 95% negative bound is approximately **Pdot > -597 ms yr-1** under the stated Gaussian and equilibrium-tide assumptions;
+- that bound implies only **Q' star > 4.7 x 10^3**, far weaker than published long-baseline constraints.
+
+The large uncertainty is the scientific result: Sectors 62 and 63 are adjacent, leaving a long gap after Sector 9. A quadratic curve can bend almost unconstrained inside that gap, so the three-sector TESS sampling cannot test the few-ms-per-year regime discussed in the literature. The repository therefore does **not** claim a decay detection or a competitive tidal-quality limit.
+
+This conclusion also clarifies why longer baselines and alternative dynamical models matter. Petrucci et al. (2020) preferred a constant period over a ten-year baseline. Rajkumar et al. (2026), using a substantially enlarged 15-year dataset, found systematic non-linear timing structure better described by a cubic ephemeris and interpreted it as possible gradual apsidal precession rather than monotonic tidal decay. The TESS-only calculation here cannot distinguish those long-baseline scenarios.
+
+Machine-readable event timings are in [`figures/individual_transit_timings.csv`](figures/individual_transit_timings.csv), and the complete model comparison is in [`figures/timing_limit_statistics.csv`](figures/timing_limit_statistics.csv).
+
 ## System context
 
 - Radius: 15.86 Earth radii
@@ -91,6 +111,8 @@ The per-sector table is in [`figures/multisector_statistics.csv`](figures/multis
 - Midpoint freedom corrects accumulated ephemeris error but introduces a bounded timing search. ΔBIC, not a naïve one-parameter p-value, is used as the support gate.
 - PDCSAP processing, dilution, stellar variability, transit-timing variations, and long-timescale covariance can still bias the inferred geometry.
 - Radius ratio, impact parameter, and fixed limb darkening are correlated. Published global fits with physical priors and simultaneous detrending remain authoritative.
+- Individual transit timings share sector-level detrending and stellar-activity systematics; adding a per-sector jitter reduces formal overconfidence but does not make the events fully independent.
+- The TESS sampling consists of one early sector and two adjacent late sectors. The reported Pdot interval is therefore conditional on a quadratic ephemeris and should not be used to reject apsidal precession or other secular models.
 
 ## Repository structure
 
@@ -100,6 +122,7 @@ index.html
 requirements.txt
 data/                       unmodified TESS FITS + NASA row + SOURCE.md
 scripts/analyze_transit.py  timing-adjusted limb-darkened transit fit
+scripts/analyze_timing_limits.py  individual transit timing + ephemeris limits
 figures/                    generated plot + summary_statistics.csv
 tests/                      real-data regression tests
 .github/workflows/tests.yml CI on every push and pull request
@@ -112,6 +135,8 @@ LICENSE                     MIT
 2. Ricker, G. R. et al. (2015), *Transiting Exoplanet Survey Satellite (TESS)*, JATIS 1, 014003, [doi:10.1117/1.JATIS.1.1.014003](https://doi.org/10.1117/1.JATIS.1.1.014003).
 3. TESS Team, *TESS Light Curves — All Sectors*, MAST, [doi:10.17909/t9-nmc8-f686](https://doi.org/10.17909/t9-nmc8-f686); Sector 9 used here.
 4. [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/), `pscomppars` TAP row retrieved 2026-08-15.
+5. Petrucci, R. et al. (2020), *Discarding orbital decay in WASP-19b after one decade of transit observations*, [arXiv:1910.11930](https://arxiv.org/abs/1910.11930).
+6. Rajkumar, A. R. et al. (2026), *Long-term monitoring of WASP-19 b: Signs of apsidal precession and molecular signatures*, [doi:10.1051/0004-6361/202556822](https://doi.org/10.1051/0004-6361/202556822).
 
 ## Author
 
