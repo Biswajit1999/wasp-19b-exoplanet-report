@@ -26,7 +26,9 @@ import analyze_transit as base
 
 TIMINGS_FILE = base.FIG_DIR / "individual_transit_timings.csv"
 STATS_FILE = base.FIG_DIR / "timing_limit_statistics.csv"
+SENSITIVITY_FILE = base.FIG_DIR / "timing_sector_sensitivity.csv"
 FIGURE_FILE = base.FIG_DIR / "wasp19b_timing_limits.png"
+SENSITIVITY_FIGURE_FILE = base.FIG_DIR / "wasp19b_sector_sensitivity.png"
 
 EARTHS_PER_SUN = 332_946.0
 RSUN_PER_AU = 0.00465047
@@ -178,6 +180,30 @@ def tidal_quality_factor(period_dot_days_per_day: float) -> float:
     return float(numerator / abs(period_dot_days_per_day))
 
 
+def sector_jackknife(
+    supported: list[dict[str, float | int | bool]],
+) -> list[dict[str, float | int]]:
+    """Refit both ephemerides after deleting each sector in turn."""
+    rows = []
+    for excluded in sorted({int(event["sector"]) for event in supported}):
+        kept = [event for event in supported if int(event["sector"]) != excluded]
+        epoch = np.asarray([event["epoch"] for event in kept], dtype=float)
+        oc = np.asarray([event["oc_seconds"] for event in kept], dtype=float) / 86_400.0
+        error = np.asarray([event["timing_error_seconds"] for event in kept], dtype=float) / 86_400.0
+        linear = weighted_ephemeris(epoch, oc, error, degree=1)
+        quadratic = weighted_ephemeris(epoch, oc, error, degree=2)
+        coefficient = float(quadratic["coefficients"][2])
+        coefficient_error = float(np.sqrt(quadratic["covariance"][2, 2]))
+        rows.append({
+            "excluded_sector": excluded,
+            "events_retained": len(kept),
+            "delta_bic_linear_minus_quadratic": float(linear["bic"] - quadratic["bic"]),
+            "period_dot_ms_per_year": 2 * coefficient / base.PERIOD_DAYS * MS_PER_DAY_PER_YEAR,
+            "period_dot_error_ms_per_year": 2 * coefficient_error / base.PERIOD_DAYS * MS_PER_DAY_PER_YEAR,
+        })
+    return rows
+
+
 def main() -> dict[str, object]:
     base.FIG_DIR.mkdir(exist_ok=True)
     events: list[dict[str, float | int | bool]] = []
@@ -214,6 +240,7 @@ def main() -> dict[str, object]:
     negative_95_limit_ms_year = min(period_dot_ms_year - 1.96 * period_dot_error_ms_year, -1e-12)
     negative_95_limit = negative_95_limit_ms_year / MS_PER_DAY_PER_YEAR
     q_lower_95 = tidal_quality_factor(negative_95_limit)
+    sensitivity = sector_jackknife(supported)
 
     fields = [
         "sector", "epoch", "predicted_bjd", "measured_bjd", "oc_seconds",
@@ -249,6 +276,11 @@ def main() -> dict[str, object]:
         writer.writerow(["quantity", "value", "unit"])
         for name, value, unit in rows:
             writer.writerow([name, f"{value:.12g}" if isinstance(value, float) else value, unit])
+
+    with SENSITIVITY_FILE.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(sensitivity[0]))
+        writer.writeheader()
+        writer.writerows(sensitivity)
 
     x = np.asarray(linear["x"])
     grid = np.linspace(x.min() - 20, x.max() + 20, 800)
@@ -300,6 +332,46 @@ def main() -> dict[str, object]:
     fig.savefig(FIGURE_FILE, dpi=190)
     plt.close(fig)
 
+    excluded = np.asarray([row["excluded_sector"] for row in sensitivity], dtype=int)
+    estimates = np.asarray([row["period_dot_ms_per_year"] for row in sensitivity])
+    uncertainties = np.asarray(
+        [row["period_dot_error_ms_per_year"] for row in sensitivity]
+    )
+    delta_bic = np.asarray(
+        [row["delta_bic_linear_minus_quadratic"] for row in sensitivity]
+    )
+    order = np.arange(len(excluded))
+    fig, ax = plt.subplots(figsize=(9.2, 5.4), constrained_layout=True)
+    ax.axvline(0, color="#334155", linestyle="--", linewidth=1.2)
+    ax.axvline(period_dot_ms_year, color="#9d174d", linewidth=1.8,
+               label="all seven sectors")
+    ax.axvspan(
+        period_dot_ms_year - period_dot_error_ms_year,
+        period_dot_ms_year + period_dot_error_ms_year,
+        color="#9d174d", alpha=0.10, linewidth=0,
+    )
+    ax.errorbar(
+        estimates, order, xerr=uncertainties, fmt="o", color="#0f766e",
+        ecolor="#5eead4", elinewidth=3, capsize=4, markersize=6,
+        label="leave-one-sector-out fit",
+    )
+    for x_value, y_value, bic in zip(estimates, order, delta_bic):
+        ax.annotate(
+            f"Delta BIC = {bic:.2f}", (x_value, y_value), xytext=(8, 7),
+            textcoords="offset points", fontsize=8, color="#475569",
+        )
+    ax.set_yticks(order, [f"exclude S{sector}" for sector in excluded])
+    ax.invert_yaxis()
+    ax.set(
+        xlabel="Conditional period derivative [ms yr$^{-1}$]",
+        ylabel="Sector-deletion experiment",
+        title="WASP-19 b timing inference is stable to deleting one TESS sector",
+    )
+    ax.grid(axis="x", alpha=0.22)
+    ax.legend(frameon=False, loc="lower right")
+    fig.savefig(SENSITIVITY_FIGURE_FILE, dpi=190)
+    plt.close(fig)
+
     return {
         "events": events,
         "supported": supported,
@@ -310,6 +382,7 @@ def main() -> dict[str, object]:
         "period_dot_error_ms_per_year": period_dot_error_ms_year,
         "negative_95_limit_ms_per_year": negative_95_limit_ms_year,
         "q_lower_95": q_lower_95,
+        "sector_jackknife": sensitivity,
     }
 
 

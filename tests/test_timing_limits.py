@@ -29,6 +29,10 @@ def test_real_tess_timing_analysis_writes_auditable_outputs():
     assert result["period_dot_error_ms_per_year"] > 0
     assert result["q_lower_95"] > 0
     assert result["linear"]["bic"] < result["quadratic"]["bic"]
+    assert len(result["sector_jackknife"]) == 7
+    assert all(np.isfinite(row["period_dot_ms_per_year"]) for row in result["sector_jackknife"])
     assert timing.TIMINGS_FILE.stat().st_size > 1000
     assert timing.STATS_FILE.stat().st_size > 200
+    assert timing.SENSITIVITY_FILE.stat().st_size > 200
     assert timing.FIGURE_FILE.stat().st_size > 10_000
+    assert timing.SENSITIVITY_FIGURE_FILE.stat().st_size > 10_000
