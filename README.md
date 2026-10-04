@@ -12,6 +12,10 @@
 
 A hot Jupiter completing an orbit in under a day, analyzed with timing freedom and explicit noise inflation in a regime where irradiation and stellar variability matter.
 <!-- TARGET-IDENTITY-END -->
+<p align="center"><img src="assets/wasp19b-artistic-concept.png" alt="Artistic concept of WASP-19 b near its active host star" width="900"></p>
+
+<p align="center"><em>Artistic concept—not an observation and not to scale. The dayside heating, circulation bands, active host and thin scattering limb are evidence-informed visual cues; the colors and cloud map are interpretive, and disputed molecular claims are not presented as established. See <a href="assets/CONCEPT_NOTE.md">visual provenance</a>.</em></p>
+
 <p align="center">
   <img src="figures/wasp19b_tess_transit.png" alt="Phase-folded real TESS transit light curve of WASP-19 b" width="760">
 </p>

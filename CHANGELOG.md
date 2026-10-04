@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0 — 2026-10-04
+
+- Added a new scientifically informed artistic concept of WASP-19 b and its active late-G host.
+- Labelled the image as conceptual, non-observational and not to scale in both public surfaces.
+- Documented the measured system and literature cues behind the visualization while explicitly avoiding a resolved molecular or cloud-map claim.
+
 ## 2.0.0 — 2026-10-04
 
 - Expanded the homogeneous 120-second TESS baseline from three sectors to the complete target-specific seven-sector inventory available at retrieval: Sectors 9, 36, 62, 63, 89, 90, and 99.
