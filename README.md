@@ -8,12 +8,6 @@
 
 
 <!-- TARGET-IDENTITY-START -->
-<p align="center">
-  <img src="assets/artist_concept.webp" alt="Artist's interpretation of WASP-19 b near its host star" width="900">
-</p>
-
-<p align="center"><em>AI-generated artist's interpretation informed by the measured system properties; not a direct image.</em></p>
-
 **Ultra-short-period giant · stellar activity · TESS**
 
 A hot Jupiter completing an orbit in under a day, analyzed with timing freedom and explicit noise inflation in a regime where irradiation and stellar variability matter.
@@ -28,7 +22,7 @@ A hot Jupiter completing an orbit in under a day, analyzed with timing freedom a
 ## Data sources
 
 - **System parameters** — the saved `pscomppars` row from the [NASA Exoplanet Archive TAP service](https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name%2Chostname%2Cra%2Cdec%2Cpl_orbper%2Cpl_tranmid%2Cpl_trandur%2Cpl_rade%2Cpl_bmasse%2Cpl_eqt%2Cpl_orbsmax%2Csy_dist%2Csy_tmag%2Cst_teff%2Cst_rad%2Cst_mass%2Cdisc_year%2Cdiscoverymethod%2Cdisc_refname%2Cdisc_pubdate%2Cdisc_facility+from+pscomppars+where+pl_name%3D%27WASP-19+b%27&format=csv).
-- **Observed photometry** — unmodified MAST file `tess2019058134432-s0009-0000000035516889-0139-s_lc.fits`, TESS Sector 9, DOI [10.17909/t9-nmc8-f686](https://doi.org/10.17909/t9-nmc8-f686). This is a real SPOC reduced light curve, not simulated data.
+- **Observed photometry** — seven unmodified 120-second SPOC light curves from TESS Sectors 9, 36, 62, 63, 89, 90, and 99, DOI [10.17909/t9-nmc8-f686](https://doi.org/10.17909/t9-nmc8-f686). These are real reduced light curves, not simulated data.
 - Exact URLs, IDs, retrieval date, and SHA-256 checksum are in [`data/SOURCE.md`](data/SOURCE.md).
 
 ## Reproduce the analysis
@@ -63,7 +57,7 @@ The timing-adjusted transit is strongly preferred by ΔBIC = 44465.2. Its fitted
 <!-- MULTISECTOR-UPGRADE-START -->
 ## Multi-sector robustness and correlated noise
 
-The archive prediction was timing-adjusted independently in 3 fitted sector(s) (S9, S62, S63), of which 3 meet Delta BIC >= 10. Formal depth errors were inflated by sqrt(max(reduced chi-square, 1)) times the residual time-averaging beta factor (observed range 3.21-3.42). The robust inverse-variance model depth across supported sectors is 22782.8 +/- 265.1 ppm; Cochran Q = 0.12 for 2 dof (p = 0.9433). These scaled errors address underestimated scatter and short-timescale correlation, but they are not a full Gaussian-process or physical limb-darkened transit fit.
+The archive prediction was timing-adjusted independently in seven sectors, all of which meet ΔBIC ≥ 10. Formal depth errors were inflated by sqrt(max(reduced chi-square, 1)) times the residual time-averaging beta factor (range 2.18–4.18). The inverse-variance depth is 22557.2 ± 154.2 ppm; Cochran Q = 5.42 for 6 dof (p = 0.491), so the fitted sector depths are compatible under these inflated marginal errors. This is not a Gaussian-process or simultaneous activity-aware transit fit.
 
 <p align="center"><img src="figures/wasp19b_multisector_transits.png" alt="Independent sector transit fits for WASP-19 b" width="760"></p>
 
@@ -78,20 +72,23 @@ The per-sector table is in [`figures/multisector_statistics.csv`](figures/multis
 
 <p align="center"><img src="figures/wasp19b_timing_limits.png" alt="TESS timing limits for WASP-19 b" width="820"></p>
 
-This repository independently measures **89 transits** from TESS Sectors 9, 62, and 63 over 1,496 days. Each event uses a fixed sector-level transit shape while fitting its midpoint and local baseline. Its timing uncertainty is inflated by both a residual time-averaging factor and an empirical sector jitter of 34–47 seconds.
+This repository independently measures **204 transits** from seven TESS sectors over 2,528 days. Each event uses a fixed sector-level transit shape while fitting its midpoint and local baseline. Its timing uncertainty is inflated by both a residual time-averaging factor and an empirical sector jitter of 33–49 seconds.
 
 The result is a useful negative sensitivity test:
 
-- a linear ephemeris is preferred over a quadratic one, with **Delta BIC(linear - quadratic) = -3.5**;
-- the conditional TESS-only estimate is **Pdot = -199 +/- 203 ms yr-1**;
-- the corresponding 95% negative bound is approximately **Pdot > -597 ms yr-1** under the stated Gaussian and equilibrium-tide assumptions;
-- that bound implies only **Q' star > 4.7 x 10^3**, far weaker than published long-baseline constraints.
+- a linear ephemeris is preferred over a quadratic one, with **ΔBIC(linear − quadratic) = −5.20**;
+- the conditional TESS-only estimate is **Ṗ = −1.38 ± 4.02 ms yr⁻¹**;
+- the corresponding 95% negative bound is **Ṗ > −9.26 ms yr⁻¹** under the stated Gaussian and equilibrium-tide assumptions;
+- that bound implies **Q′★ > 3.0 × 10⁵**;
+- deleting any one sector gives ΔBIC from −4.84 to −5.17 and Ṗ from −2.66 to −0.17 ms yr⁻¹.
 
-The large uncertainty is the scientific result: Sectors 62 and 63 are adjacent, leaving a long gap after Sector 9. A quadratic curve can bend almost unconstrained inside that gap, so the three-sector TESS sampling cannot test the few-ms-per-year regime discussed in the literature. The repository therefore does **not** claim a decay detection or a competitive tidal-quality limit.
+<p align="center"><img src="figures/wasp19b_sector_sensitivity.png" alt="Leave-one-sector-out period-derivative sensitivity analysis for WASP-19 b" width="760"></p>
+
+The expanded TESS baseline now reaches the few-ms-per-year regime, but the estimate remains conditional on fixed sector-level transit shapes, empirical jitter, a quadratic ephemeris, and diagonal event errors. The repository therefore does **not** claim a decay detection or use the result to exclude apsidal precession.
 
 This conclusion also clarifies why longer baselines and alternative dynamical models matter. Petrucci et al. (2020) preferred a constant period over a ten-year baseline. Rajkumar et al. (2026), using a substantially enlarged 15-year dataset, found systematic non-linear timing structure better described by a cubic ephemeris and interpreted it as possible gradual apsidal precession rather than monotonic tidal decay. The TESS-only calculation here cannot distinguish those long-baseline scenarios.
 
-Machine-readable event timings are in [`figures/individual_transit_timings.csv`](figures/individual_transit_timings.csv), and the complete model comparison is in [`figures/timing_limit_statistics.csv`](figures/timing_limit_statistics.csv).
+Machine-readable event timings, model statistics, and leave-one-sector-out results are in [`figures/individual_transit_timings.csv`](figures/individual_transit_timings.csv), [`figures/timing_limit_statistics.csv`](figures/timing_limit_statistics.csv), and [`figures/timing_sector_sensitivity.csv`](figures/timing_sector_sensitivity.csv).
 
 ## System context
 
@@ -104,6 +101,12 @@ Machine-readable event timings are in [`figures/individual_transit_timings.csv`]
 - Host: WASP-19 · distance 268.32 pc
 - Discovery: 2009 by Transit (SuperWASP)
 
+## Atmospheric evidence is not a single settled detection
+
+WASP-19 b is a useful case study in cross-instrument reproducibility and stellar contamination. Huitson et al. (2013) reported a 4σ H₂O feature and no/low TiO from HST, while Sedaghati et al. (2017) reported TiO, haze, Na and H₂O from a combined ground/HST spectrum. Espinoza et al. (2019) recovered a featureless optical IMACS spectrum and subsolar TiO/Na in a joint interpretation; later ESPRESSO work constrained TiO to roughly 100× subsolar while retaining enhanced blue scattering. These statements concern different instruments, epochs, reduction choices, resolution regimes and model spaces, and the active host varies at the percent level.
+
+This repository does not recompute molecular abundances from broadband TESS photometry. It treats the disagreement as scientific context and an argument for activity-aware, multi-epoch spectral reanalysis—not as permission to select whichever historical claim is most dramatic.
+
 ## Limitations
 
 - The orbit is assumed circular and the quadratic limb-darkening coefficients are fixed representative values; they are not atmosphere-grid interpolations.
@@ -112,7 +115,7 @@ Machine-readable event timings are in [`figures/individual_transit_timings.csv`]
 - PDCSAP processing, dilution, stellar variability, transit-timing variations, and long-timescale covariance can still bias the inferred geometry.
 - Radius ratio, impact parameter, and fixed limb darkening are correlated. Published global fits with physical priors and simultaneous detrending remain authoritative.
 - Individual transit timings share sector-level detrending and stellar-activity systematics; adding a per-sector jitter reduces formal overconfidence but does not make the events fully independent.
-- The TESS sampling consists of one early sector and two adjacent late sectors. The reported Pdot interval is therefore conditional on a quadratic ephemeris and should not be used to reject apsidal precession or other secular models.
+- The reported Ṗ interval remains conditional on a quadratic ephemeris, fixed per-sector shapes, empirical jitter and diagonal timing errors; it should not be used to reject apsidal precession or other secular models.
 
 ## Repository structure
 
@@ -133,10 +136,13 @@ LICENSE                     MIT
 
 1. [Hebb et al. 2010](https://ui.adsabs.harvard.edu/abs/2010ApJ...708..224H/abstract) — discovery reference as listed by the NASA Exoplanet Archive.
 2. Ricker, G. R. et al. (2015), *Transiting Exoplanet Survey Satellite (TESS)*, JATIS 1, 014003, [doi:10.1117/1.JATIS.1.1.014003](https://doi.org/10.1117/1.JATIS.1.1.014003).
-3. TESS Team, *TESS Light Curves — All Sectors*, MAST, [doi:10.17909/t9-nmc8-f686](https://doi.org/10.17909/t9-nmc8-f686); Sector 9 used here.
+3. TESS Team, *TESS Light Curves — All Sectors*, MAST, [doi:10.17909/t9-nmc8-f686](https://doi.org/10.17909/t9-nmc8-f686); Sectors 9, 36, 62, 63, 89, 90, and 99 used here.
 4. [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/), `pscomppars` TAP row retrieved 2026-08-15.
 5. Petrucci, R. et al. (2020), *Discarding orbital decay in WASP-19b after one decade of transit observations*, [arXiv:1910.11930](https://arxiv.org/abs/1910.11930).
 6. Rajkumar, A. R. et al. (2026), *Long-term monitoring of WASP-19 b: Signs of apsidal precession and molecular signatures*, [doi:10.1051/0004-6361/202556822](https://doi.org/10.1051/0004-6361/202556822).
+7. Huitson, C. M. et al. (2013), *HST optical-to-near-IR transmission spectrum of WASP-19 b*, [doi:10.1093/mnras/stt1243](https://doi.org/10.1093/mnras/stt1243).
+8. Sedaghati, E. et al. (2017), *Detection of titanium oxide in the atmosphere of a hot Jupiter*, [doi:10.1038/nature23651](https://doi.org/10.1038/nature23651).
+9. Espinoza, N. et al. (2019), *ACCESS: a featureless optical transmission spectrum for WASP-19 b*, [doi:10.1093/mnras/sty2691](https://doi.org/10.1093/mnras/sty2691).
 
 ## Author
 
