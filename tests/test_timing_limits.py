@@ -23,11 +23,12 @@ def test_tidal_quality_factor_is_positive():
 
 def test_real_tess_timing_analysis_writes_auditable_outputs():
     result = timing.main()
-    assert len(result["supported"]) >= 30
-    assert len(result["jitters"]) == 3
+    assert len(result["supported"]) >= 200
+    assert set(result["jitters"]) == {9, 36, 62, 63, 89, 90, 99}
     assert np.isfinite(result["period_dot_ms_per_year"])
     assert result["period_dot_error_ms_per_year"] > 0
     assert result["q_lower_95"] > 0
+    assert result["linear"]["bic"] < result["quadratic"]["bic"]
     assert timing.TIMINGS_FILE.stat().st_size > 1000
     assert timing.STATS_FILE.stat().st_size > 200
     assert timing.FIGURE_FILE.stat().st_size > 10_000

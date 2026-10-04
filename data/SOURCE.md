@@ -42,3 +42,20 @@ All are unmodified standard-cadence SPOC light curves from the same [MAST TESS c
 - Sector 63: `tess2023069172124-s0063-0000000035516889-0255-s_lc.fits` (1,941,120 bytes)
   - MAST URI: `mast:TESS/product/tess2023069172124-s0063-0000000035516889-0255-s_lc.fits`
   - SHA-256: `8d61f6d1c3bc90f061ae4ce37ce9509ed52f4836022576ef6581510061a5601f`
+- Sector 36: `tess2021065132309-s0036-0000000035516889-0207-s_lc.fits` (1,837,440 bytes)
+  - MAST URI: `mast:TESS/product/tess2021065132309-s0036-0000000035516889-0207-s_lc.fits`
+  - SHA-256: `6e465e081090b36cdeb0d467bc27270e99801ca3d3ee75b10946a741d9a5a1a1`
+- Sector 89: `tess2025042113628-s0089-0000000035516889-0286-s_lc.fits` (2,105,280 bytes)
+  - MAST URI: `mast:TESS/product/tess2025042113628-s0089-0000000035516889-0286-s_lc.fits`
+  - SHA-256: `8f1e4763f361e85c0fe57036666264cc5a656cf2616e0fb1465497b3f1dd2e2f`
+- Sector 90: `tess2025071122000-s0090-0000000035516889-0287-s_lc.fits` (2,041,920 bytes)
+  - MAST URI: `mast:TESS/product/tess2025071122000-s0090-0000000035516889-0287-s_lc.fits`
+  - SHA-256: `c0e055be676307e1c19b9d9f51f9e879c739d210a421ec81c1e17ed63aed2428`
+- Sector 99: `tess2026005125623-s0099-0000000035516889-0300-s_lc.fits` (2,021,760 bytes)
+  - MAST URI: `mast:TESS/product/tess2026005125623-s0099-0000000035516889-0300-s_lc.fits`
+  - SHA-256: `64fd1ea3c5f66466b7b9c7400c40a96218ece4fd978f2627398617e5fec5cf90`
+
+The seven committed 120-second SPOC products are the complete target-specific
+light-curve inventory returned by a MAST cone/product query on 2026-10-04.
+FFI products and parallel 20-second products are excluded to avoid mixing
+cadences and duplicate observations in the frozen timing experiment.
