@@ -1,0 +1,86 @@
+{
+  "project": "WASP-19 b: One Day in the Life of a Hot Jupiter",
+  "repository": "https://github.com/Biswajit1999/wasp-19b-exoplanet-report",
+  "files": [
+    {
+      "label": "Data source notes",
+      "path": "data/SOURCE.md",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "System parameters",
+      "path": "data/system_parameters.csv",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Tess2019058134432 s0009 0000000035516889 0139 s lc",
+      "path": "data/tess2019058134432-s0009-0000000035516889-0139-s_lc.fits",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Tess2021065132309 s0036 0000000035516889 0207 s lc",
+      "path": "data/tess2021065132309-s0036-0000000035516889-0207-s_lc.fits",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Tess2023043185947 s0062 0000000035516889 0254 s lc",
+      "path": "data/tess2023043185947-s0062-0000000035516889-0254-s_lc.fits",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Tess2023069172124 s0063 0000000035516889 0255 s lc",
+      "path": "data/tess2023069172124-s0063-0000000035516889-0255-s_lc.fits",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Tess2025042113628 s0089 0000000035516889 0286 s lc",
+      "path": "data/tess2025042113628-s0089-0000000035516889-0286-s_lc.fits",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Summary statistics",
+      "path": "figures/summary_statistics.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Timing sector sensitivity",
+      "path": "figures/timing_sector_sensitivity.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Individual transit timings",
+      "path": "figures/individual_transit_timings.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Multisector statistics",
+      "path": "figures/multisector_statistics.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Timing limit statistics",
+      "path": "figures/timing_limit_statistics.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Wasp19b sector sensitivity",
+      "path": "figures/wasp19b_sector_sensitivity.png",
+      "role": "Figures"
+    },
+    {
+      "label": "Wasp19b depth consistency",
+      "path": "figures/wasp19b_depth_consistency.png",
+      "role": "Figures"
+    },
+    {
+      "label": "Wasp19b multisector transits",
+      "path": "figures/wasp19b_multisector_transits.png",
+      "role": "Figures"
+    },
+    {
+      "label": "Wasp19b noise diagnostics",
+      "path": "figures/wasp19b_noise_diagnostics.png",
+      "role": "Figures"
+    }
+  ]
+}
